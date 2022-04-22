@@ -1,5 +1,7 @@
 from collections import OrderedDict
+import numpy as np
 
+#define class Point to use for coordinates and vectors
 class Point():
 
     def __init__(self, x, y):
@@ -20,13 +22,14 @@ class Point():
 
 
 
-
+#calculate vector between two points
 def calculate_vector(start, end):
     vector = end - start
     return vector
 
 
-
+#calculate all fields the vector goes through
+#do calculation for all steps in x and y direction
 def calc_touched_fields(vector, start_point, end_point):
     
     vector_x = float(vector.get_x())
@@ -38,10 +41,10 @@ def calc_touched_fields(vector, start_point, end_point):
     factor_x = abs(0.5 / vector_x)
     factor_y = abs(0.5 / vector_y)
     
+    #use offset to avoid calculation directly on field border
     offset = 0.005
     
     touched_fields = []
-    #in loops add + start x und y
 
     #print("x loop")
     i=0
@@ -72,7 +75,7 @@ def calc_touched_fields(vector, start_point, end_point):
     return touched_fields
 
 
-
+#calculate length of vector. use value later for sorting
 def calc_pythago(vector):
     x = vector.get_x()
     y = vector.get_y()
@@ -81,7 +84,7 @@ def calc_pythago(vector):
     return res
 
 
-
+#sort list of touched fields. convert to dictionary with length of vector as key value
 def sort_touched_fields(touched_fields, start_point, end_point):
     
     print()
@@ -117,20 +120,87 @@ def sort_touched_fields(touched_fields, start_point, end_point):
     print("\n")
 
 
-
+#validate user input to avoid errors due to incorrect input and datatypes
 def validate_input_int(input_value):
     try:
         val = input_value
-        val_x = int(val[0])
-        val_y = int(val[1])
-        return True
+        if len(val) == 2:
+            val_x = int(val[0])
+            val_y = int(val[1])
+            return True
+        else:
+            print()
+            print("ERROR: input incorrect!")
+            print()
+            return False
     except ValueError:
         print()
         print("ERROR: enter Integers only!")
         print()
     
 
+#generate a grid to show calculated touched fields / vector
+def generate_grid(vector, touched, start_point, end_point):
+    rows, columns = (abs(vector.get_y()), abs(vector.get_x()))
+    grid = np.full((rows + 1, columns + 1), 0)
 
+    #if start not 0 , set offset-to-origin: x + x*(-1) and y + y+(-1)
+    #calc all points with offset-to-origin
+
+    #point xy + offset + xy translation
+    #use only offset and translation to get line in positive quadrant
+    
+    #offset to move vector to origin
+    #translate to move vector to positive quadrant because of array indexes
+    #otherwise vector could not fit in grid
+    offset_x = offset_y = 0
+
+    if (start_point.get_x() != 0 or start_point.get_y() != 0):
+        offset_x = start_point.get_x() * (-1)
+        offset_y = start_point.get_y() * (-1)
+    
+    translate_x = translate_y = 0
+    #if offset > 0 then translate - offset 
+    if vector.get_x() < 0 and vector.get_y() < 0:
+        translate_x = end_point.get_x() * (-1) - offset_x
+        translate_y = end_point.get_y() * (-1) - offset_y
+    else:
+        if vector.get_x() < 0:
+            translate_x = end_point.get_x() * (-1) - offset_x
+        if vector.get_y() < 0:
+            translate_y = end_point.get_y() * (-1) - offset_y
+
+    #print("off x: " + str(offset_x))
+    #print("off y: " + str(offset_y))
+    #print("trans x: " + str(translate_x))
+    #print("trans y: " + str(translate_y))
+
+    #print("vec: " + str(vector.values()))
+    #print("rows: " + str(rows))
+    #print("columns: " + str(columns))
+    
+    #print(touched)
+
+    grid_start = Point(start_point.get_x() + offset_x + translate_x, start_point.get_y() + offset_y + translate_y)
+    print("GRID: start point at: " + str(grid_start.get_x()) + "|" + str(grid_start.get_y()))
+    
+    n=0
+    for k in touched:
+        x = touched[n].get_x() + offset_x + translate_x
+        y = touched[n].get_y() + offset_y + translate_y
+        #print("x/y: " + str(x) + " " + str(y))
+        grid[y][x] = 1
+        n += 1
+ 
+    print(grid)
+    print("\n")
+    print("------")
+    print()
+
+
+
+#main loop for user input
+#call needed steps for calculation according to choosen option
 def start():
     mainloop = True
 
@@ -151,6 +221,7 @@ def start():
             vector = calculate_vector(start_point, end_point)
             touched = calc_touched_fields(vector, start_point, end_point)
             sort_touched_fields(touched, start_point, end_point)
+            generate_grid(vector, touched, start_point, end_point)
         elif user_input == "2":
             start_point = Point(0,0)
             end = input("end point x y: ").split()
@@ -159,6 +230,7 @@ def start():
                 vector = calculate_vector(start_point, end_point)
                 touched = calc_touched_fields(vector, start_point, end_point)
                 sort_touched_fields(touched, start_point, end_point)
+                generate_grid(vector, touched, start_point, end_point)
         elif user_input == "3":
             start = input("start point x y: ").split()
             if validate_input_int(start):
@@ -169,16 +241,15 @@ def start():
                     vector = calculate_vector(start_point, end_point)
                     touched = calc_touched_fields(vector, start_point, end_point)
                     sort_touched_fields(touched, start_point, end_point)
+                    generate_grid(vector, touched, start_point, end_point)
         elif user_input == "q":
             mainloop = False
         else:
             print("input NOT VALID!!!\n")
 
         print()
-        #vector = calculate_vector(start_point, end_point)
-
-        #calc_touched_fields(vector)
 
 
 
+#start program execution
 start()
