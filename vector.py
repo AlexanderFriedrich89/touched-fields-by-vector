@@ -1,5 +1,5 @@
 from collections import OrderedDict
-import numpy as np
+from numpy import full as np_full
 
 #define class Point to use for coordinates and vectors
 class Point():
@@ -142,7 +142,7 @@ def validate_input_int(input_value):
 #generate a grid to show calculated touched fields / vector
 def generate_grid(vector, touched, start_point, end_point):
     rows, columns = (abs(vector.get_y()), abs(vector.get_x()))
-    grid = np.full((rows + 1, columns + 1), 0)
+    grid = np_full((rows + 1, columns + 1), 0)
 
     #if start not 0 , set offset-to-origin: x + x*(-1) and y + y+(-1)
     #calc all points with offset-to-origin
