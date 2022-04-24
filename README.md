@@ -5,10 +5,20 @@ With this Python-Script you can calculate all fields a vector goes through from 
 Just choose an option and enter integer values seperated with whitespace.
 It also works in termux-android-app with python3 installed.
 
-The directory ```/dist``` contains a standalone build for Linux.
-Go into ```/dist/vector``` and run the executable with 
+If you do not have Python installed use one of the builds in ```/dist```.
+
+The directory ```/dist``` contains a standalone build for Linux and Windows.
+
+- **Linux:**
+Go into ```/dist/vector_linux``` and run the executable with 
 ```sh
 ./vector
+```
+
+- **Windows:**
+Go into ```/dist/vector_win``` and double click .exe-file
+```sh
+vector.exe
 ```
 
 
