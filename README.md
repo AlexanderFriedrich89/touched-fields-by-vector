@@ -5,6 +5,13 @@ With this Python-Script you can calculate all fields a vector goes through from 
 Just choose an option and enter integer values seperated with whitespace.
 It also works in termux-android-app with python3 installed.
 
+The directory ```/dist``` contains a standalone build for Linux.
+Go into ```/dist/vector``` and run the executable with 
+```sh
+./vector
+```
+
+
 Take a look at the example screenshot.
 
 [![image](https://github.com/AlexanderFriedrich89/touched-fields-by-vector/blob/main/Screenshot_Termux_1.jpg?raw=true)](https://github.com/AlexanderFriedrich89/touched-fields-by-vector/blob/main/Screenshot_Termux_1.jpg?raw=true)
