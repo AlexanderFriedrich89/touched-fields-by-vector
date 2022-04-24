@@ -3,6 +3,8 @@
 ---
 **Known Issue:**
 - Exeption 0 division not handled, will be fixed soon.
+- 0 Division Error is fixed in source file but not yet implemented in distributions.
+- updated distributions will follow.
 ---
 Imagine you have a squared grid and each square represents a point with x and y coordinates, e.g. x|y = 0|0, 3|7, ... and so on.
 With this Python-Script you can calculate all fields a vector goes through from a start point to an end point.
