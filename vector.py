@@ -38,8 +38,16 @@ def calc_touched_fields(vector, start_point, end_point):
     steps_x_direction = vector_x * 2
     steps_y_direction = vector_y * 2
 
-    factor_x = abs(0.5 / vector_x)
-    factor_y = abs(0.5 / vector_y)
+    #if vector values = 0, set factor values = 0 to avoid Error 0 Division
+    if vector_x == 0:
+        factor_x = 0
+    else:
+        factor_x = abs(0.5 / vector_x)
+
+    if vector_y == 0:
+        factor_y = 0
+    else:
+        factor_y = abs(0.5 / vector_y)
     
     #use offset to avoid calculation directly on field border
     offset = 0.005
